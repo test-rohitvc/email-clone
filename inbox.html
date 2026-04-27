@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="flex flex-col h-full bg-white relative">
+    <!-- Top toolbar -->
+    <div class="flex items-center p-2 border-b border-gray-100 text-gray-600 sticky top-0 bg-white z-10 md:flex h-[52px]">
+        <div class="flex items-center px-2 gap-2">
+            <button class="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500"><span class="material-icons text-[20px]">check_box_outline_blank</span></button>
+            <button class="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500"><span class="material-icons text-[20px]">refresh</span></button>
+            <button class="w-10 h-10 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500"><span class="material-icons text-[20px]">more_vert</span></button>
+        </div>
+    </div>
+    
+    <!-- Emails -->
+    <div class="flex-1 overflow-y-auto w-full">
+        {% if emails %}
+        <div class="divide-y divide-gray-100 border-b border-gray-100">
+            {% for email in emails %}
+            <a href="/thread/{{ email.thread_id }}" class="flex items-center px-4 py-2 bg-gray-50 hover:shadow-[inset_1px_0_0_#dadce0,inset_-1px_0_0_#dadce0,0_1px_2px_0_rgba(60,64,67,.3),0_1px_3px_1px_rgba(60,64,67,.15)] border-l-[3px] border-l-transparent hover:border-l-blue-600 transition-shadow cursor-pointer text-sm group">
+                <div class="flex items-center gap-1.5 mr-4 text-gray-300 shrink-0">
+                    <span class="material-icons text-[20px] invisible group-hover:visible cursor-grab hover:text-gray-700">drag_indicator</span>
+                    <span class="material-icons text-[20px] cursor-pointer hover:text-gray-700">check_box_outline_blank</span>
+                    <span class="material-icons text-[20px] cursor-pointer hover:text-gray-600">star_border</span>
+                </div>
+                <!-- Sender -->
+                <div class="w-48 font-bold text-gray-900 truncate shrink-0 pr-4">
+                    {{ email.sender }}
+                </div>
+                <!-- Subject & Body Preview -->
+                <div class="flex-1 truncate text-gray-500">
+                    <span class="font-bold text-gray-900 mr-2">{{ email.subject }}</span> 
+                    <span class="">- {{ email.body | truncate(100) }}</span>
+                </div>
+                <!-- Date -->
+                <div class="w-24 text-right text-xs font-bold text-gray-900 shrink-0 group-hover:hidden pl-2">
+                    {{ email.received_at.strftime('%b %d') }}
+                </div>
+                <!-- Hover actions -->
+                <div class="w-24 text-right hidden group-hover:flex items-center justify-end gap-2 text-gray-500 shrink-0">
+                    <span class="material-icons text-[20px] hover:text-gray-800" title="Archive">archive</span>
+                    <span class="material-icons text-[20px] hover:text-gray-800" title="Delete">delete</span>
+                    <span class="material-icons text-[20px] hover:text-gray-800" title="Mark as unread">mark_email_unread</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="p-10 flex flex-col items-center justify-center text-center h-[70vh] text-gray-500">
+            <span class="material-icons text-[80px] text-gray-200 mb-4">inbox</span>
+            <p class="text-lg font-medium text-gray-600">Your inbox is empty.</p>
+            <p class="text-sm text-gray-400 mt-1">You've reached the end of the line.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

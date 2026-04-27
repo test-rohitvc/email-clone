@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="h-full bg-white flex flex-col p-4 md:p-8 overflow-y-auto">
+    <div class="bg-white rounded-t-xl rounded-b-xl shadow-2xl border border-gray-200 overflow-hidden flex flex-col mx-auto w-full max-w-4xl min-h-[550px]">
+        <div class="bg-[#f2f6fc] px-4 py-3 flex justify-between items-center border-b border-gray-200">
+            <h2 class="text-sm font-semibold text-gray-800">{% if thread_id %}Reply to Thread{% else %}New Message{% endif %}</h2>
+            <div class="flex items-center text-gray-500 gap-1.5">
+                <a href="/inbox" class="w-7 h-7 rounded hover:bg-gray-200 flex items-center justify-center cursor-pointer transition"><span class="material-icons text-[18px]">remove</span></a>
+                <button class="w-7 h-7 rounded hover:bg-gray-200 flex items-center justify-center cursor-pointer transition"><span class="material-icons text-[18px]">open_in_full</span></button>
+                <a href="/inbox" class="w-7 h-7 rounded hover:bg-gray-200 flex items-center justify-center cursor-pointer transition"><span class="material-icons text-[18px]">close</span></a>
+            </div>
+        </div>
+        <form action="/send" method="POST" class="flex flex-col flex-1 relative bg-white">
+            {% if thread_id %}<input type="hidden" name="thread_id" value="{{ thread_id }}">{% endif %}
+            
+            <div class="flex items-center border-b border-gray-100 px-4 py-1.5 focus-within:shadow-sm focus-within:z-10 group relative mt-2">
+                <label class="text-gray-500 text-[15px] w-14 shrink-0 font-normal">To</label>
+                <input type="email" name="to_email" value="{{ reply_to or '' }}" required class="flex-1 py-1.5 outline-none text-[15px] text-gray-800 bg-transparent">
+            </div>
+            
+            <div class="flex items-center border-b border-gray-100 px-4 py-1.5 focus-within:shadow-sm focus-within:z-10 relative">
+                <input type="text" name="subject" value="{% if subj %}Re: {{ subj }}{% endif %}" placeholder="Subject" required class="flex-1 py-1.5 outline-none text-[15px] text-gray-800 bg-transparent">
+            </div>
+            
+            <div class="flex-1 px-4 py-4 flex flex-col relative w-full h-full min-h-[300px]">
+                <textarea name="body" required class="flex-1 w-full outline-none resize-none text-[15px] text-gray-800 h-full font-sans leading-relaxed" placeholder="Write something..."></textarea>
+            </div>
+            
+            <div class="flex items-center justify-between px-4 py-3 border-t border-gray-100 bg-gray-50/50 mt-auto">
+                <div class="flex items-center gap-3">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-full font-medium text-sm transition shadow shadow-blue-500/20 active:shadow-inner flex items-center gap-1 min-w-[80px] justify-center">
+                        Send
+                    </button>
+                    <div class="h-6 w-px bg-gray-300 mx-1"></div>
+                    <button type="button" class="w-9 h-9 rounded text-gray-600 hover:bg-gray-200 flex items-center justify-center transition" title="Formatting options"><span class="material-icons text-[20px]">format_color_text</span></button>
+                    <button type="button" class="w-9 h-9 rounded text-gray-600 hover:bg-gray-200 flex items-center justify-center transition" title="Attach files"><span class="material-icons text-[20px]">attach_file</span></button>
+                    <button type="button" class="w-9 h-9 rounded text-gray-600 hover:bg-gray-200 flex items-center justify-center transition" title="Insert link"><span class="material-icons text-[20px]">insert_link</span></button>
+                    <button type="button" class="w-9 h-9 rounded text-gray-600 hover:bg-gray-200 flex items-center justify-center transition" title="Insert emoji"><span class="material-icons text-[20px]">sentiment_satisfied_alt</span></button>
+                </div>
+                <div>
+                     <a href="/inbox" class="w-9 h-9 rounded text-gray-500 hover:bg-gray-200 flex items-center justify-center transition" title="Discard draft"><span class="material-icons text-[20px]">delete</span></a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

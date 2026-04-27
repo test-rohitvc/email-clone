@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevMail</title>
+    <!-- Tailwind v4 browser CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body { font-family: 'Roboto', 'Helvetica Neue', sans-serif; }
+        .pl-13 { padding-left: 3.25rem; }
+    </style>
+</head>
+<body class="bg-white text-gray-800 h-screen overflow-hidden flex flex-col font-sans">
+    {% if user %}
+    <!-- Header -->
+    <header class="flex items-center justify-between px-4 py-2 bg-white border-b border-gray-100 shrink-0 h-16">
+        <div class="flex items-center gap-4">
+            <button class="p-2 hover:bg-gray-100 rounded-full transition text-gray-500">
+                <span class="material-icons">menu</span>
+            </button>
+            <div class="flex items-center gap-2">
+                <div class="text-blue-600 font-bold text-2xl tracking-tight flex items-center">
+                    <span class="material-icons text-blue-500 mr-2 text-[26px]">mail</span> DevMail
+                </div>
+            </div>
+        </div>
+        <div class="flex-1 max-w-2xl px-8 hidden md:block">
+            <div class="bg-gray-100 flex items-center px-4 py-2 rounded-full focus-within:bg-white focus-within:ring-1 focus-within:shadow-md transition">
+                <span class="material-icons text-gray-500 mr-2">search</span>
+                <input type="text" placeholder="Search mail" class="bg-transparent outline-none w-full text-gray-700">
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="/groups" class="p-2 hover:bg-gray-100 rounded-full text-gray-500" title="Groups"><span class="material-icons">group</span></a>
+            <div class="h-8 w-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm tracking-wide shadow" title="{{ user.email }}">
+                {{ user.email[0] | upper }}
+            </div>
+            <a href="/logout" class="text-sm border ml-2 border-gray-200 hover:bg-gray-50 px-3 py-1.5 rounded-md text-gray-600 font-medium transition">Logout</a>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white flex flex-col py-3 pr-2 shrink-0 border-r border-gray-100">
+            <div class="px-2 mb-4">
+                <a href="/compose" class="inline-flex items-center gap-3 bg-[#c2e7ff] hover:bg-[#b5e0fc] text-gray-900 px-5 py-3.5 rounded-2xl shadow-sm transition font-medium text-sm w-40">
+                    <span class="material-icons text-gray-700">edit</span> Compose
+                </a>
+            </div>
+            <nav class="flex-1 space-y-0.5">
+                <a href="/inbox" class="flex items-center gap-4 px-6 py-2 rounded-r-full font-medium text-sm {% if request.url.path == '/inbox' or request.url.path == '/' %}bg-[#d3e3fd] text-blue-800 font-bold{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+                    <span class="material-icons text-[20px] {% if request.url.path == '/inbox' or request.url.path == '/' %}text-blue-800{% else %}text-gray-500{% endif %}">inbox</span> Inbox
+                </a>
+                <a href="/groups" class="flex items-center gap-4 px-6 py-2 rounded-r-full font-medium text-sm {% if request.url.path == '/groups' %}bg-[#d3e3fd] text-blue-800 font-bold{% else %}text-gray-700 hover:bg-gray-100{% endif %}">
+                    <span class="material-icons text-[20px] {% if request.url.path == '/groups' %}text-blue-800{% else %}text-gray-500{% endif %}">people</span> Groups
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 bg-white overflow-y-auto rounded-tl-2xl shadow-[inset_0px_2px_4px_-2px_rgba(0,0,0,0.1)] h-full">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    {% else %}
+    <!-- Unauthenticated Main Content -->
+    <main class="h-full bg-[#f0f4f9] flex items-center justify-center p-4">
+        {% block unauth_content %}{% endblock %}
+    </main>
+    {% endif %}
+</body>
+</html>

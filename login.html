@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block unauth_content %}
+<div class="bg-white p-10 rounded-2xl shadow-lg w-full max-w-md border border-gray-100/50">
+    <div class="text-center mb-8">
+        <div class="text-blue-600 font-bold text-3xl tracking-tight flex items-center justify-center mb-2">
+            <span class="material-icons text-blue-500 text-[36px] mr-2">mail</span> DevMail
+        </div>
+        <h2 class="text-2xl text-gray-800 font-normal mt-4">Sign in</h2>
+        <p class="text-gray-600 mt-2 text-[15px]">Use your DevMail Account</p>
+    </div>
+
+    {% if request.query_params.get('error') %}
+    <div class="bg-red-50 text-red-600 p-3 rounded-md mb-6 text-sm flex items-center">
+        <span class="material-icons text-red-500 mr-2 text-[20px]">error_outline</span>
+        {{ request.query_params.get('error') }}
+    </div>
+    {% endif %}
+
+    <form action="/auth" method="POST" class="space-y-4">
+        <div class="relative group">
+            <input type="email" name="email" id="email" required class="w-full border border-gray-300 rounded-md px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 peer placeholder-transparent" placeholder="Email or phone">
+            <label for="email" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-base transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-blue-600 peer-valid:top-0 peer-valid:-translate-y-1/2 peer-valid:text-xs bg-white px-1">Email or phone</label>
+        </div>
+        <div class="relative group">
+            <input type="password" name="password" id="password" required class="w-full border border-gray-300 rounded-md px-4 py-3.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 peer placeholder-transparent" placeholder="Enter your password">
+            <label for="password" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-base transition-all peer-placeholder-shown:text-base peer-placeholder-shown:top-1/2 peer-placeholder-shown:-translate-y-1/2 peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-blue-600 peer-valid:top-0 peer-valid:-translate-y-1/2 peer-valid:text-xs bg-white px-1">Enter your password</label>
+        </div>
+        
+        <div class="pt-8 flex items-center justify-between">
+            <button type="submit" name="action" value="register" class="text-blue-600 font-medium hover:bg-blue-50 hover:rounded-md px-3 py-2 text-sm transition -ml-3">Create account</button>
+            <button type="submit" name="action" value="login" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-full font-medium transition text-sm">Next</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
